@@ -21,7 +21,7 @@ Visual Studio 2015
 The Visual Studio 2015 `c-visa-example` project should compile and run as-is on a 64-bit system. This project contains a copy of the headers and libraries that you need to compile the project. These are:
 
 - `visa\include\visa.h`
-- `visa\include\visa_types.h`
+- `visa\include\visatype.h`
 - `visa\lib\visa.lib`
 
 This is for convenience for the purposes of this tutorial, but it is not a best practice. In general, it is better to use the `include` and `lib` locations from your VISA installation so that you automatically include a current and compatible version.
@@ -33,3 +33,22 @@ For a 64-bit system, you can (usually) find these files at:
 and
 
 `C:\Program Files\IVI Foundation\VISA\Win64\Lib_x64\msc\`
+
+MacOS
+-----
+
+#### Note:
+
+c-visa-example for MacOS is a work in progress. Specifically, the make file needs to be completed and the relevant libraries either included or pointed to.
+
+This project uses `make` and `clang`, which are typically already included with a mac.
+
+To build, navigate into the project directory and type:
+
+~~~bash
+# build
+make
+
+# run
+./example
+~~~
