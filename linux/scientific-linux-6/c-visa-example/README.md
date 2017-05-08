@@ -5,8 +5,8 @@ A C/C++ VISA instrument connection example for Scientific Linux / Red Hat Enterp
 
 The example should work on other versions of linux with some small modification of the `Makefile`. Specifically, the `lib` and `include` paths.
 
-NI VISA is 32-bit
------------------
+NI VISA for linux is 32-bit
+---------------------------
 
 NI VISA for linux only supports 32-bit applications. Make sure gcc 32 bit dev tools are installed. On Scientific Linux/RHEL 6 x64, this can be done with the command:
 
