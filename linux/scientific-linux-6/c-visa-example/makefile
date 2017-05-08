@@ -1,8 +1,3 @@
-# Note:
-#   NI VISA for linux only supports 32-bit applications.
-#   Make sure gcc 32 bit dev tools are installed.
-#   On Scientific Linux/RHEL 6 x64:
-#     sudo yum install glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 ncurses-devel.i686
 
 # Compile for 32-bit
 GCC=-m32
