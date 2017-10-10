@@ -10,8 +10,8 @@
 int main()
 {
 	// Communication buffer
-	const ViUInt32 buffer_size_B = 100;
-	ViChar buffer[100];
+	const ViUInt32 buffer_size_B = 1000;
+	ViChar buffer[1000];
 
 	// Status variable
 	// Each VISA function returns a status code
@@ -40,6 +40,7 @@ int main()
 	ViUInt32 timeout_ms = 5000;
 	status = viOpen(resource_manager, resource_string, access_mode, timeout_ms, &instrument);
 	if (status < VI_SUCCESS) {
+		printf("Error connecting to instrument\n");
 		viStatusDesc(resource_manager, status, buffer);
 		printf("%s\n", buffer);
 		return 0;
@@ -53,6 +54,7 @@ int main()
 	ViUInt32 sent_B;
 	status = viWrite(instrument, scpi_command, length_B, &sent_B);
 	if (status < VI_SUCCESS) {
+		printf("Error writing to instrument\n");
 		viStatusDesc(resource_manager, status, buffer);
 		printf("%s\n", buffer);
 		return 0;
@@ -66,6 +68,7 @@ int main()
 	ViUInt32 read_B;
 	status = viRead(instrument, buffer, buffer_size_B, &read_B);
 	if (status < VI_SUCCESS) {
+		printf("Error reading from instrument\n");
 		viStatusDesc(resource_manager, status, buffer);
 		printf("%s\n", buffer);
 		return 0;
