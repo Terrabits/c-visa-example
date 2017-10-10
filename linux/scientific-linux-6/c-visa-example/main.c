@@ -17,7 +17,7 @@ int main()
 	// Communication buffer
 	const ViUInt32 buffer_size_B = 1000;
 	ViChar buffer[1000];
-	ViUint32 io_bytes;
+	ViUInt32 io_bytes;
 
 	// Get VISA resource manager
 	ViSession resource_manager;
