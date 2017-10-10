@@ -1,9 +1,11 @@
 
-# Compile for 32-bit:
+# # Compile for 32-bit:
 # GCC=-m32
+# LIBS=/usr/local/lib/libvisa.so
+# INCLUDES=-I/usr/local/include
 
-# Dependency locations
-LIBS=/usr/local/lib/libvisa.so
+# 64-bit dependency locations
+LIBS=/usr/local/lib64/libvisa.so
 INCLUDES=-I/usr/local/include
 
 all: example
