@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# After VISA installation:
+# (requires reboot)
+sudo /usr/local/bin/updateNIDrivers
+
+# Clone repo
+cd ~/Documents
+git clone https://github.com/Terrabits/c-visa-example.git
+cd c-visa-example
+cd linux/rhel-6.6/c-visa-example
+
+echo "Edit ip address in main.c"
+echo "then make"
+echo "then run ./example"
+gedit ./main.c &

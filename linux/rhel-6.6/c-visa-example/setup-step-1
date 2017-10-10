@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+sudo yum -y install git gcc kernel-devel-$(uname -r) glibc-devel glibc-headers libstdc++
+
+# To compile for 32-bit:
+# sudo yum -y install glibc-devel.i686 glibc-headers.i686 libstdc++.i686
+
+# Install NI-VISA from:
+# http://www.ni.com/download/ni-visa-15.0/5410/en/
+# Note: 15.0 is compatible with RHEL 6.6 gcc/libstdc++ version
+echo "Install NI-VISA 15.0 for linux from:"
+echo "  http://www.ni.com/download/ni-visa-15.0/5410/en/"
+echo "This should mount to:"
+echo "  /media/NIVISA1500L"
+echo "Restart if prompted."
+echo "Then run ./setup-step-2"
