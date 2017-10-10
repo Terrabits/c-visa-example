@@ -9,6 +9,10 @@
 
 int main()
 {
+	// Communication buffer
+	const ViUInt32 buffer_size_B = 100;
+	ViChar buffer[100];
+
 	// Status variable
 	// Each VISA function returns a status code
 	// indicating success or type of failure
@@ -36,7 +40,8 @@ int main()
 	ViUInt32 timeout_ms = 5000;
 	status = viOpen(resource_manager, resource_string, access_mode, timeout_ms, &instrument);
 	if (status < VI_SUCCESS) {
-		printf("Could not connect to the instrument.\n");
+		viStatus(resource_manager, status, buffer);
+		printf("%s\n", buffer);
 		return 0;
 	}
 
@@ -48,7 +53,8 @@ int main()
 	ViUInt32 sent_B;
 	status = viWrite(instrument, scpi_command, length_B, &sent_B);
 	if (status < VI_SUCCESS) {
-		printf("Could not write to instrument.\n");
+		viStatus(resource_manager, status, buffer);
+		printf("%s\n", buffer);
 		return 0;
 	}
 
@@ -57,27 +63,24 @@ int main()
 	// look something like this
 	// (depending on model):
 	// "Rohde-Schwarz,ZNBT8-8Port,1318700624100104,2.70"
-	const ViUInt32 buffer_size_B = 100;
-	ViChar response_buffer[100];
 	ViUInt32 read_B;
-	status = viRead(instrument, response_buffer, buffer_size_B, &read_B);
+	status = viRead(instrument, buffer, buffer_size_B, &read_B);
 	if (status < VI_SUCCESS) {
-		printf("Could not read response from instrument.\n");
+		viStatus(resource_manager, status, buffer);
+		printf("%s\n", buffer);
 		return 0;
 	}
 
 	// Response is not null-terminated.
 	// Add '\0' at end.
 	if (read_B < buffer_size_B) {
-		response_buffer[read_B] = '\0';
+		buffer[read_B] = '\0';
 	}
 	else {
-		response_buffer[buffer_size_B] = '\0';
+		buffer[buffer_size_B] = '\0';
 	}
 
 	// Display response
-	printf("Instrument id string:\n");
-	printf(response_buffer);
-	printf("\n");
+	printf("Instrument id string:\n%s\n\n", buffer);
 	return 0;
 }
