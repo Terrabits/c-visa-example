@@ -38,6 +38,9 @@ int main()
 		return 0;
 	}
 
+	// Set timeout on instrument io
+	viSetAttribute(instrument, VI_ATTR_TMO_VALUE, timeout_ms);
+
 	// Write *IDN? (id string?)
 	ViBuf scpi_command = "*IDN?";
 	status = viWrite(instrument, scpi_command, (ViUInt32)strlen(scpi_command), &io_bytes);
