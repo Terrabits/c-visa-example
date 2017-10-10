@@ -9,13 +9,19 @@
 
 int main()
 {
-	// Status variable
-	// Each VISA function returns a status code
-	// indicating success or type of failure
-	ViStatus status;
+	// Connection info
+	ViChar resource_string[] = "TCPIP::192.168.1.107::INSTR";
+	ViAccessMode access_mode = VI_NULL;
+	ViUInt32 timeout_ms      = 5000;
+
+	// Communication buffer
+	const ViUInt32 buffer_size_B = 1000;
+	ViChar buffer[1000];
+	ViUInt32 io_bytes;
 
 	// Get VISA resource manager
 	ViSession resource_manager;
+	ViStatus  status;
 	status = viOpenDefaultRM(&resource_manager);
 	if (status < VI_SUCCESS) {
 		printf("Could not open VISA resource manager.\n");
@@ -23,32 +29,28 @@ int main()
 	}
 
 	// Connect to instrument
-	// The resource string indicates how/where to
-	// connect to the instrument.
-	// The most common resource strings are:
-	//   TCPIP::<address>::INSTR
-	//   GPIB::<address>::INSTR
-	// Access mode doesn't usually need to be changed
-	// from it's default setting (null).
-	ViChar resource_string[] = "TCPIP::127.0.0.1::INSTR";
 	ViSession instrument;
-	ViAccessMode access_mode = VI_NULL;
-	ViUInt32 timeout_ms = 5000;
 	status = viOpen(resource_manager, resource_string, access_mode, timeout_ms, &instrument);
 	if (status < VI_SUCCESS) {
-		printf("Could not connect to the instrument.\n");
+		printf("Error connecting to instrument\n");
+		viStatusDesc(resource_manager, status, buffer);
+		printf("%s\n", buffer);
 		return 0;
 	}
 
-	// Write a SCPI command to the instrument
-	// The "*IDN?" command requests the
-	// identification string from the instrument.
+	// Set timeout on instrument io
+	viSetAttribute(instrument, VI_ATTR_TMO_VALUE, timeout_ms);
+
+	// Set term char
+	// viSetAttribute(instrument, VI_ATTR_TERMCHAR_EN, '\n');
+
+	// Write *IDN? (id string?)
 	ViBuf scpi_command = "*IDN?";
-	ViUInt32 length_B = (ViUInt32)strlen(scpi_command);
-	ViUInt32 sent_B;
-	status = viWrite(instrument, scpi_command, length_B, &sent_B);
+	status = viWrite(instrument, scpi_command, (ViUInt32)strlen(scpi_command), &io_bytes);
 	if (status < VI_SUCCESS) {
-		printf("Could not write to instrument.\n");
+		printf("Error writing to instrument\n");
+		viStatusDesc(resource_manager, status, buffer);
+		printf("%s\n", buffer);
 		return 0;
 	}
 
@@ -57,27 +59,24 @@ int main()
 	// look something like this
 	// (depending on model):
 	// "Rohde-Schwarz,ZNBT8-8Port,1318700624100104,2.70"
-	const ViUInt32 buffer_size_B = 100;
-	ViChar response_buffer[100];
-	ViUInt32 read_B;
-	status = viRead(instrument, response_buffer, buffer_size_B, &read_B);
+	status = viRead(instrument, buffer, buffer_size_B, &io_bytes);
 	if (status < VI_SUCCESS) {
-		printf("Could not read response from instrument.\n");
+		printf("Error reading from instrument\n");
+		viStatusDesc(resource_manager, status, buffer);
+		printf("%s\n", buffer);
 		return 0;
 	}
 
 	// Response is not null-terminated.
 	// Add '\0' at end.
-	if (read_B < buffer_size_B) {
-		response_buffer[read_B] = '\0';
+	if (io_bytes < buffer_size_B) {
+		buffer[io_bytes] = '\0';
 	}
 	else {
-		response_buffer[buffer_size_B] = '\0';
+		buffer[buffer_size_B] = '\0';
 	}
 
 	// Display response
-	printf("Instrument id string:\n");
-	printf(response_buffer);
-	printf("\n");
+	printf("Instrument id string:\n%s\n\n", buffer);
 	return 0;
 }
