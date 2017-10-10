@@ -1,5 +1,5 @@
-C/C++ VISA Example for Linux
-============================
+C/C++ VISA Example for Red Hat Enterprise Linux 6
+=================================================
 
 A C/C++ VISA instrument connection example for Red Hat Enterprise Linux (RHEL) 6.6 using NI VISA 15.0 for Linux.
 
