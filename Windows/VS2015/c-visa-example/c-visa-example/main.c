@@ -17,7 +17,7 @@ int main()
 	// Get VISA resource manager
 	ViSession resource_manager;
 	status = viOpenDefaultRM(&resource_manager);
-	if (status != VI_SUCCESS) {
+	if (status < VI_SUCCESS) {
 		printf("Could not open VISA resource manager.\n");
 		return 0;
 	}
@@ -35,7 +35,7 @@ int main()
 	ViAccessMode access_mode = VI_NULL;
 	ViUInt32 timeout_ms = 5000;
 	status = viOpen(resource_manager, resource_string, access_mode, timeout_ms, &instrument);
-	if (status != VI_SUCCESS) {
+	if (status < VI_SUCCESS) {
 		printf("Could not connect to the instrument.\n");
 		return 0;
 	}
@@ -47,7 +47,7 @@ int main()
 	ViUInt32 length_B = (ViUInt32)strlen(scpi_command);
 	ViUInt32 sent_B;
 	status = viWrite(instrument, scpi_command, length_B, &sent_B);
-	if (status != VI_SUCCESS) {
+	if (status < VI_SUCCESS) {
 		printf("Could not write to instrument.\n");
 		return 0;
 	}
@@ -61,7 +61,7 @@ int main()
 	ViChar response_buffer[100];
 	ViUInt32 read_B;
 	status = viRead(instrument, response_buffer, buffer_size_B, &read_B);
-	if (status != VI_SUCCESS) {
+	if (status < VI_SUCCESS) {
 		printf("Could not read response from instrument.\n");
 		return 0;
 	}
@@ -81,4 +81,3 @@ int main()
 	printf("\n");
 	return 0;
 }
-
