@@ -1,16 +1,27 @@
 #!/usr/bin/env bash
 
+# dependencies
 sudo yum -y install git gcc kernel-devel-$(uname -r) glibc-devel glibc-headers libstdc++
 
 # 32-bit dependencies
 # sudo yum -y install glibc-devel.i686 glibc-headers.i686 libstdc++.i686
 
-# Install NI-VISA from:
-# http://www.ni.com/download/ni-visa-15.0/5410/en/
-# Note: 15.0 is compatible with RHEL 6.6 gcc/libstdc++ version
-echo "Install NI-VISA 15.0 for linux from:"
-echo "  http://www.ni.com/download/ni-visa-15.0/5410/en/"
-echo "This should mount to:"
-echo "  /media/NIVISA1500L"
-echo "Restart if prompted"
-echo "Then continue with setup-step-2"
+# Download NI-VISA
+# Human page:
+#   http://www.ni.com/download/ni-visa-15.0/5410/en/
+# ISO:
+#   http://download.ni.com/support/softlib/visa/NI-VISA/15.0/Linux/NI-VISA-15.0.0.iso
+curl --output Downloads/NI-VISA-15.0.0.iso http://download.ni.com/support/softlib/visa/NI-VISA/15.0/Linux/NI-VISA-15.0.0.iso
+
+# mount
+sudo mkdir /mount/NIVISA1500L
+sudo mount -o loop Downloads/NI-VISA-15.0.0.iso /media/NIVISA1500L
+
+# install
+sudo /media/NIVISA1500L/INSTALL
+
+# unmount
+sudo umount /media/NIVISA1500L
+
+# update drivers
+sudo /usr/local/bin/updateNIDrivers
