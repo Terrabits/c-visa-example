@@ -6,6 +6,8 @@ A C/C++ VISA instrument connection example for Red Hat Enterprise Linux (RHEL) 6
 Setup
 -----
 
+Setup requires an internet connection.
+
 Because NI-VISA requires a restart, setup is split into two parts.
 
 ### Setup step 1
