@@ -40,7 +40,7 @@ int main()
 	ViUInt32 timeout_ms = 5000;
 	status = viOpen(resource_manager, resource_string, access_mode, timeout_ms, &instrument);
 	if (status < VI_SUCCESS) {
-		viStatus(resource_manager, status, buffer);
+		viStatusDesc(resource_manager, status, buffer);
 		printf("%s\n", buffer);
 		return 0;
 	}
@@ -53,7 +53,7 @@ int main()
 	ViUInt32 sent_B;
 	status = viWrite(instrument, scpi_command, length_B, &sent_B);
 	if (status < VI_SUCCESS) {
-		viStatus(resource_manager, status, buffer);
+		viStatusDesc(resource_manager, status, buffer);
 		printf("%s\n", buffer);
 		return 0;
 	}
@@ -66,7 +66,7 @@ int main()
 	ViUInt32 read_B;
 	status = viRead(instrument, buffer, buffer_size_B, &read_B);
 	if (status < VI_SUCCESS) {
-		viStatus(resource_manager, status, buffer);
+		viStatusDesc(resource_manager, status, buffer);
 		printf("%s\n", buffer);
 		return 0;
 	}
